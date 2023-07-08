@@ -7,7 +7,30 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "flat": true,
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "flat": true,
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "flat": true,
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "flat": true,
+          "skipTests": true
         }
       },
       "root": "",
