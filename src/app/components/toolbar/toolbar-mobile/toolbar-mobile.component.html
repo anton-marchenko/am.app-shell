@@ -4,19 +4,17 @@
       Mobile Logo
     </div>
   </div>
-  <div class="nav-btn" (click)="toggleMenu()">
-    <label for="nav-check">
+  <button class="nav-burger reset-button" (click)="toggleMenu()">
+    <label>
       <span></span>
       <span></span>
       <span></span>
     </label>
-  </div>
+  </button>
 
   <ul class="nav-list" [ngClass]="{'opened': opened}">
-
-    <li><a href="#">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><button (click)="goToApp('app1')">App1</button></li>
-    <li><button (click)="goToApp('app2')">Contact</button></li>
+    <li><button class="nav-button reset-button" (click)="goToApp('app1')">Home</button></li>
+    <li><button class="nav-button reset-button" (click)="goToApp('testo')">About</button></li>
+    <li><button class="nav-button reset-button" (click)="goToApp('wmf')">Contact</button></li>
   </ul>
 </nav>

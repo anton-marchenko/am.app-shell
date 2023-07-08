@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AppShellService } from 'src/app/services/app-shell.service';
 
 @Component({
   selector: 'app-toolbar-mobile',
@@ -9,5 +10,17 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./toolbar-mobile.component.scss']
 })
 export class ToolbarMobileComponent {
+  public opened: boolean = false;
 
+  constructor(private readonly appShellService: AppShellService) {}
+
+  public goToApp(alias: string) {
+    this.opened = false;
+
+    this.appShellService.goToApp(alias);
+  }
+
+  public toggleMenu() {
+    this.opened = !this.opened
+  }
 }

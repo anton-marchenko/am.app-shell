@@ -22,30 +22,33 @@
 .nav > .nav-list > li {
   list-style-type: none;
 }
-.nav > .nav-list > li a {
-  text-decoration: none;
+.nav-button {
   color: #efefef;
-  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 @media (max-width: 1080px) {
   .nav {
     padding: 1rem;
   }
-  .nav > .nav-btn {
+  .nav > .nav-burger {
     display: inline-block;
     position: absolute;
     right: 0;
     top: 0;
     padding-top: 0.2rem;
   }
-  .nav > .nav-btn > label {
+  .nav > .nav-burger > label {
     display: inline-block;
     width: 50px;
     height: 50px;
     padding: 13px;
   }
-  .nav > .nav-btn > label > span {
+  .nav > .nav-burger > label > span {
+    cursor: pointer;
     display: block;
     width: 25px;
     height: 10px;
