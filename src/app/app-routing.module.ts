@@ -4,11 +4,21 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'about',
-    loadChildren: () => import('./components/about-page/about-page.routes').then(r => r.ABOUT_PAGE_ROUTES)
+    loadChildren: () =>
+      import('./components/about-page/about-page.routes').then(
+        (r) => r.ABOUT_PAGE_ROUTES
+      ),
+  },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./components/home-page/home-page.component').then(
+        (m) => m.HomePageComponent
+      ),
   },
   {
     path: 'wmf',
-    loadComponent: () => import('mfe1/Component').then(m => m.AppComponent)
+    loadComponent: () => import('mfe1/Component').then((m) => m.AppComponent),
   },
   {
     path: '**',
@@ -17,7 +27,6 @@ const routes: Routes = [
         (c) => c.ContainerComponent
       ),
   },
-
 ];
 
 @NgModule({

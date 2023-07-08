@@ -15,7 +15,7 @@ const appsExample: App[] = [
     type: 'inner',
     alias: DEFAULT_APP,
     title: 'Home',
-    url: 'http://localhost:53263/',
+    url: '',
   },
   {
     type: 'inner',
@@ -28,6 +28,12 @@ const appsExample: App[] = [
     alias: 'wmf',
     title: 'Contacts',
     url: '',
+  },
+  {
+    type: 'inner',
+    alias: 'dashboard',
+    title: 'Dashboard',
+    url: 'http://localhost:53263/',
   },
   {
     type: 'outer',
