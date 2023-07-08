@@ -8,31 +8,31 @@ type App = {
   url: string;
 };
 
-const DEFAULT_APP = 'app1';
+const DEFAULT_APP = 'home';
 
 const appsExample: App[] = [
   {
-    type: 'wmf',
-    alias: 'testo',
-    title: 'TESTO',
-    url: '',
-  },
-  {
     type: 'inner',
     alias: DEFAULT_APP,
-    title: 'APP_1',
+    title: 'Home',
     url: 'http://localhost:53263/',
   },
   {
     type: 'inner',
-    alias: 'app2',
-    title: 'APP_2',
-    url: 'http://localhost:54035/',
+    alias: 'about',
+    title: 'About',
+    url: '',
+  },
+  {
+    type: 'wmf',
+    alias: 'wmf',
+    title: 'Contacts',
+    url: '',
   },
   {
     type: 'outer',
-    alias: 'app3',
-    title: 'Angular Blog',
+    alias: 'blog',
+    title: 'Blog',
     url: 'https://blog.angular.io/',
   },
 ];
@@ -65,7 +65,7 @@ export class AppShellService {
   public init() {
     // "Back" button in browser
     // history.back();
-    window.addEventListener("popstate", (event) => {
+    window.addEventListener('popstate', () => {
       const alias = this.getCurrAppAliasByURL(window.location.pathname);
 
       this.currAppAlias.set(alias);

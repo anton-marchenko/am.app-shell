@@ -3,12 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'about',
+    loadChildren: () => import('./components/about-page/about-page.routes').then(r => r.ABOUT_PAGE_ROUTES)
+  },
+  {
+    path: 'wmf',
+    loadComponent: () => import('mfe1/Component').then(m => m.AppComponent)
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('./components/container/container.component').then(
         (c) => c.ContainerComponent
       ),
   },
+
 ];
 
 @NgModule({
