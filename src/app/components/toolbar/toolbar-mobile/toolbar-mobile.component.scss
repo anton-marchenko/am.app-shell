@@ -25,6 +25,7 @@
 .nav-button {
   color: #efefef;
 
+  &.active,
   &:hover {
     text-decoration: underline;
   }

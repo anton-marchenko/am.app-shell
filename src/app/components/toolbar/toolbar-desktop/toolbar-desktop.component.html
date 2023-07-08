@@ -4,8 +4,12 @@
 
   <div class="spacer"></div>
 
-  <button class="reset-button" (click)="goToApp('app1')">App1</button>
-  <button class="reset-button" (click)="goToApp('app2')">app2</button>
-  <button class="reset-button" (click)="goToApp('testo')">testo</button>
-  <button class="reset-button" (click)="goToApp('wmf')">wmf app</button>
+  <button
+    *ngFor="let navItem of navItems()"
+    [ngClass]="{ 'active': navItem.active }"
+    class="reset-button"
+    (click)="goToApp(navItem.alias)"
+  >
+    {{ navItem.title }}
+  </button>
 </div>

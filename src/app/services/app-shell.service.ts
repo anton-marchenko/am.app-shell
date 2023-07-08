@@ -45,6 +45,15 @@ export class AppShellService {
   public readonly currApp = computed(() => {
     return this.state().apps.find((app) => app.alias === this.currAppAlias());
   });
+  public readonly navItems = computed(() => {
+    const currAppAlias = this.currAppAlias();
+
+    return this.state().apps.map((app) => ({
+      title: app.title,
+      alias: app.alias,
+      active: app.alias === currAppAlias,
+    }));
+  });
 
   public readonly state = signal<{ loaded: boolean; apps: App[] }>({
     loaded: false,

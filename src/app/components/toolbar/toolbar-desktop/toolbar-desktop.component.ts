@@ -7,9 +7,13 @@ import { AppShellService } from 'src/app/services/app-shell.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './toolbar-desktop.component.html',
-  styleUrls: ['./toolbar-desktop.component.scss']
+  styleUrls: ['./toolbar-desktop.component.scss'],
 })
 export class ToolbarDesktopComponent {
+  public get navItems() {
+    return this.appShellService.navItems;
+  }
+
   constructor(private readonly appShellService: AppShellService) {}
 
   public goToApp(alias: string) {

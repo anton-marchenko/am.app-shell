@@ -1,8 +1,6 @@
-<nav class="nav" >
+<nav class="nav">
   <div class="nav-header">
-    <div class="nav-title">
-      Mobile Logo
-    </div>
+    <div class="nav-title">Mobile Logo</div>
   </div>
   <button class="nav-burger reset-button" (click)="toggleMenu()">
     <label>
@@ -12,9 +10,15 @@
     </label>
   </button>
 
-  <ul class="nav-list" [ngClass]="{'opened': opened}">
-    <li><button class="nav-button reset-button" (click)="goToApp('app1')">Home</button></li>
-    <li><button class="nav-button reset-button" (click)="goToApp('testo')">About</button></li>
-    <li><button class="nav-button reset-button" (click)="goToApp('wmf')">Contact</button></li>
+  <ul class="nav-list" [ngClass]="{ opened: opened }">
+    <li *ngFor="let navItem of navItems()">
+      <button
+        [ngClass]="{ active: navItem.active }"
+        class="nav-button reset-button"
+        (click)="goToApp(navItem.alias)"
+      >
+        {{ navItem.title }}
+      </button>
+    </li>
   </ul>
 </nav>

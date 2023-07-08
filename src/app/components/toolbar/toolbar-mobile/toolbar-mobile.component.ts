@@ -12,6 +12,10 @@ import { AppShellService } from 'src/app/services/app-shell.service';
 export class ToolbarMobileComponent {
   public opened: boolean = false;
 
+  public get navItems() {
+    return this.appShellService.navItems;
+  }
+
   constructor(private readonly appShellService: AppShellService) {}
 
   public goToApp(alias: string) {
