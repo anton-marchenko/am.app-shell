@@ -1,11 +1,10 @@
-<nav class="nav">
-  <input type="checkbox" id="nav-check">
+<nav class="nav" >
   <div class="nav-header">
     <div class="nav-title">
       Mobile Logo
     </div>
   </div>
-  <div class="nav-btn">
+  <div class="nav-btn" (click)="toggleMenu()">
     <label for="nav-check">
       <span></span>
       <span></span>
@@ -13,9 +12,11 @@
     </label>
   </div>
 
-  <ul class="nav-list">
+  <ul class="nav-list" [ngClass]="{'opened': opened}">
+
     <li><a href="#">Home</a></li>
     <li><a href="#">About</a></li>
-    <li><a href="#">Contact</a></li>
+    <li><button (click)="goToApp('app1')">App1</button></li>
+    <li><button (click)="goToApp('app2')">Contact</button></li>
   </ul>
 </nav>

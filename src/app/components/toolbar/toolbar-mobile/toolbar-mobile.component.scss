@@ -1,13 +1,7 @@
 // from: https://codepen.io/chriiss/pen/qBJjLEx
 
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  font-family: 'Segoe UI';
-}
 .nav {
+  font-family: 'Segoe UI';
   width: 100%;
   background-color: #ad19d2;
   display: flex;
@@ -33,10 +27,8 @@ body {
   color: #efefef;
   cursor: pointer;
 }
-.nav > #nav-check {
-    display: none;
-}
-@media (max-width: 780px) {
+
+@media (max-width: 1080px) {
   .nav {
     padding: 1rem;
   }
@@ -60,6 +52,7 @@ body {
     border-top: 2px solid #eee;
   }
   .nav > .nav-list {
+    z-index: 1;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -76,7 +69,7 @@ body {
     width: 100%;
     margin-top: 1.5rem;
   }
-  .nav > #nav-check:checked ~ .nav-list {
+  .nav > .nav-list.opened {
     height: calc(100vh - 50px);
   }
 }
