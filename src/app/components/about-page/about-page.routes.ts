@@ -3,9 +3,18 @@ import { AboutPageComponent } from './about-page.component';
 
 export const ABOUT_PAGE_ROUTES: Route[] = [
   {
-    path: '**',
+    path: 'company',
+    loadComponent: () =>
+      import('./about-company/about-company.component').then(
+        (c) => c.AboutCompanyComponent
+      ),
+  },
+  {
+    path: '',
     component: AboutPageComponent,
-    // loadComponent: () =>
-    //   import('./testo.component').then((c) => c.TestoComponent),
+  },
+  {
+    path: '**',
+    redirectTo: ''
   },
 ];
