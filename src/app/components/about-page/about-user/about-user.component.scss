@@ -5,4 +5,10 @@
 
 a {
   margin-right: 10px;
+
+  &.active {
+    text-decoration: none;
+    color: gray;
+    pointer-events: none;
+  }
 }

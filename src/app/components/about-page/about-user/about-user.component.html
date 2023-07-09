@@ -25,7 +25,10 @@
 <h2>Read also about other users:</h2>
 
 <p>
-  <a *ngFor="let user of users" [routerLink]="['/about', 'user', user.id]">{{
-    user.name
-  }}</a>
+  <a
+    *ngFor="let user of users"
+    [routerLink]="['/about', 'user', user.id]"
+    [ngClass]="{ active: user.name === userName() }"
+    >{{ user.name }}</a
+  >
 </p>
