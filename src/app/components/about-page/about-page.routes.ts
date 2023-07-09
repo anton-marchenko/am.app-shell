@@ -3,10 +3,10 @@ import { AboutPageComponent } from './about-page.component';
 
 export const ABOUT_PAGE_ROUTES: Route[] = [
   {
-    path: 'company',
+    path: 'user/:id',
     loadComponent: () =>
-      import('./about-company/about-company.component').then(
-        (c) => c.AboutCompanyComponent
+      import('./about-user/about-user.component').then(
+        (c) => c.AboutUserComponent
       ),
   },
   {
