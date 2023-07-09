@@ -1,31 +1,32 @@
 import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-about-user',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './about-user.component.html',
   styleUrls: ['./about-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutUserComponent {
-  private readonly users = new Map([
-    [1, 'Anton'],
-    [2, 'Aram'],
-    [3, 'Stas'],
-    [4, 'Artem'],
-  ]);
-
   private readonly params = toSignal(this.route.params);
 
   public readonly userName = computed(() => {
     const id = Number(this.params()?.['id']);
 
-    return this.users.get(id);
+    return this.userService.getUserName(id);
   });
 
-  constructor(private readonly route: ActivatedRoute) {}
+  public get users() {
+    return this.userService.getUsers();
+  }
+
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly userService: UserService
+  ) {}
 }
