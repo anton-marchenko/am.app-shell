@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppShellService } from 'src/app/services/app-shell.service';
 
@@ -7,7 +7,8 @@ import { AppShellService } from 'src/app/services/app-shell.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './toolbar-mobile.component.html',
-  styleUrls: ['./toolbar-mobile.component.scss']
+  styleUrls: ['./toolbar-mobile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarMobileComponent {
   public opened: boolean = false;

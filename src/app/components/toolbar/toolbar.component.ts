@@ -2,6 +2,7 @@ import {
   Component,
   ViewChild,
   ViewContainerRef,
+  ChangeDetectionStrategy,
   AfterViewInit,
   Injector,
   effect,
@@ -18,6 +19,7 @@ import {
   imports: [CommonModule],
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarComponent implements AfterViewInit {
   @ViewChild('toolbarContainer', { read: ViewContainerRef })

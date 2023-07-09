@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppShellService } from 'src/app/services/app-shell.service';
 
@@ -8,6 +8,7 @@ import { AppShellService } from 'src/app/services/app-shell.service';
   imports: [CommonModule],
   templateUrl: './toolbar-desktop.component.html',
   styleUrls: ['./toolbar-desktop.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToolbarDesktopComponent {
   public get navItems() {

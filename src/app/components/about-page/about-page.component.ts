@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -7,7 +7,8 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './about-page.component.html',
-  styleUrls: ['./about-page.component.scss']
+  styleUrls: ['./about-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AboutPageComponent {
 
