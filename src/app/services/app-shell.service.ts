@@ -5,6 +5,7 @@ type App = {
   type: 'inner' | 'wmf' | 'outer';
   alias: string;
   title: string;
+  description: string;
   url: string;
 };
 
@@ -15,30 +16,42 @@ const appsExample: App[] = [
     type: 'inner',
     alias: DEFAULT_APP,
     title: 'Home',
+    description: 'Simple page inside this angular app',
     url: '',
   },
   {
     type: 'inner',
     alias: 'about',
     title: 'About',
+    description: 'Simple page inside this angular app',
     url: '',
   },
   {
     type: 'wmf',
     alias: 'wmf',
     title: 'Contacts',
+    description: 'Micro-front (embedded by webpack module federation)',
     url: '',
   },
   {
     type: 'inner',
     alias: 'dashboard',
     title: 'Dashboard',
+    description: 'Micro-front (embedded by iframe)',
+    url: 'http://localhost:53263/',
+  },
+  {
+    type: 'inner',
+    alias: 'dashboard2',
+    title: 'Dashboard2',
+    description: 'Micro-front (embedded by iframe)',
     url: 'http://localhost:53263/',
   },
   {
     type: 'outer',
     alias: 'blog',
     title: 'Blog',
+    description: 'External link (will be opened in other tab)',
     url: 'https://blog.angular.io/',
   },
 ];
@@ -57,6 +70,7 @@ export class AppShellService {
     return this.state().apps.map((app) => ({
       title: app.title,
       alias: app.alias,
+      description: app.description,
       active: app.alias === currAppAlias,
     }));
   });
