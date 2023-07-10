@@ -2,7 +2,7 @@ import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
 
 type App = {
-  type: 'inner' | 'wmf' | 'outer';
+  type: 'inner' | 'wmf';
   alias: string;
   title: string;
   description: string;
@@ -27,9 +27,23 @@ const appsExample: App[] = [
     url: '',
   },
   {
+    type: 'inner',
+    alias: 'app1',
+    title: 'APP1',
+    description: 'Micro-front (embedded by iframe)',
+    url: 'http://run.mocky.io/v3/9097d9ab-4b46-4516-965f-ba19d497426a',
+  },
+  {
+    type: 'inner',
+    alias: 'app2',
+    title: 'APP2',
+    description: 'Micro-front (embedded by iframe)',
+    url: 'http://run.mocky.io/v3/21c9b000-1631-4f42-8f64-8e727da6320e',
+  },
+  {
     type: 'wmf',
     alias: 'wmf',
-    title: 'Contacts',
+    title: 'APP3 (WMF)',
     description: 'Micro-front (embedded by webpack module federation)',
     url: '',
   },
@@ -99,6 +113,12 @@ export class AppShellService {
         if (msg.type === 'goToApp') {
           this.goToApp(msg.alias);
         }
+
+        if (msg.type === 'updatePath') {
+          const url = '/' + this.currAppAlias() + msg.path;
+
+          this.router.navigateByUrl(url, { replaceUrl: true })
+        }
       },
       false
     );
@@ -116,33 +136,11 @@ export class AppShellService {
     }, 1000);
   }
 
-  public goToApp(alias: string) {
-    const app = this.state().apps.find((app) => app.alias === alias);
-
-    if (app?.type === 'outer') {
-      window.open(app.url, '_blank');
-
-      return;
-    }
-
+  public setCurrAlias(alias: string) {
     this.currAppAlias.set(alias);
-
-    this.router.navigate([alias]);
   }
 
-  /**
-   *
-   * @param path example: "/app1"
-   */
-  private getCurrAppAliasByURL(path: string) {
-    const regex = /^\/([a-zA-Z0-9\-\_])+/;
-
-    // Find app alias. Example:
-    // "/app1?x=y" => "app1"
-    const alias = path.match(regex)?.[0]?.replace('/', '');
-
-    const currApp = this.state().apps.find((app) => app.alias === alias);
-
-    return currApp?.alias ?? null;
+  public goToApp(alias: string) {
+    this.router.navigate([alias]);
   }
 }
