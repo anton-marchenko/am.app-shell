@@ -25,7 +25,7 @@ const appsExample: App[] = [
     title: 'About',
     description: 'Simple page inside this angular app',
     url: '',
-    disabled: true,
+    // disabled: true,
   },
   {
     alias: 'app1',
@@ -50,7 +50,7 @@ const appsExample: App[] = [
     alias: 'dashboard',
     title: 'Dashboard',
     description: 'Micro-front (embedded by iframe)',
-    url: 'http://localhost:64596',
+    url: 'http://localhost:49797',
   },
 ];
 
@@ -130,10 +130,10 @@ export class AppShellService {
         data.loaded = true;
       });
 
-      const currUrl = this.router.url;
-      const currAppAlias = this.getCurrAppAliasByURL(currUrl);
+      const currLocationPath = this.location.path();
+      const currAppAlias = this.getCurrAppAliasByURL(currLocationPath);
 
-      // this.currAppAlias.set(currAppAlias);
+      this.currAppAlias.set(currAppAlias);
     }, 1000);
   }
 
