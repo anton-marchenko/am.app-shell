@@ -46,7 +46,7 @@ const appsExample: App[] = [
     title: 'APP3 (WMF)',
     description: 'Micro-front (embedded by webpack module federation)',
     url: '',
-    disabled: true,
+    // disabled: true,
   },
   {
     alias: 'dashboard',
