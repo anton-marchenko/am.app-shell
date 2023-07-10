@@ -7,9 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppShellService } from 'src/app/services/app-shell.service';
-import { map } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-container',
@@ -24,30 +22,17 @@ export class ContainerComponent implements OnInit {
 
   public readonly iframeUrl$ = toObservable(this.appShellService.iframeUrl);
 
-  private readonly isAppLoaded$ = toObservable(this.appShellService.state).pipe(
-    map((state) => state.loaded)
-  );
-
-  constructor(
-    private readonly appShellService: AppShellService,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private readonly appShellService: AppShellService) {}
 
   ngOnInit(): void {
-    this.isAppLoaded$.subscribe((loaded) => {
-      if (loaded) {
-        this.activatedRoute.url.subscribe((url) => {
-          this.appShellService.setCurrAlias(url[0]?.path);
-        });
-      }
-    });
-
     this.iframeUrl$.subscribe({
       next: (url) => {
         if (!url) {
-          // debugger;
-          url = 'http://run.mocky.io/v3/e0e8dfa0-3046-405f-ab6f-24e52b89fc27';
+          console.error('Empty URL');
+
+          return;
         }
+
         this.iframeRef?.nativeElement?.contentWindow?.location?.replace(url);
       },
       complete: () => {

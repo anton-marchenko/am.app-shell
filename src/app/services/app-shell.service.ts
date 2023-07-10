@@ -1,6 +1,8 @@
 import { Location } from '@angular/common';
 import { Injectable, computed, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs';
 
 type App = {
   disabled?: boolean;
@@ -18,14 +20,14 @@ const appsExample: App[] = [
     title: 'Home',
     description: 'Simple page inside this angular app',
     url: '',
-    disabled: true,
+    // disabled: true,
   },
   {
     alias: 'about',
     title: 'About',
     description: 'Simple page inside this angular app',
     url: '',
-    disabled: true,
+    // disabled: true,
   },
   {
     alias: 'app1',
@@ -51,7 +53,7 @@ const appsExample: App[] = [
     title: 'Dashboard',
     description: 'Micro-front (embedded by iframe)',
     url: 'http://localhost:49797',
-    disabled: true,
+    // disabled: true,
   },
 ];
 
@@ -59,7 +61,6 @@ const appsExample: App[] = [
   providedIn: 'root',
 })
 export class AppShellService {
-  public readonly currAppAlias = signal<string | null>(null);
   public readonly currApp = computed(() => {
     return this.state().apps.find((app) => app.alias === this.currAppAlias());
   });
@@ -97,16 +98,41 @@ export class AppShellService {
     apps: [],
   });
 
+  public readonly route1 = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => e.urlAfterRedirects),
+    )
+  );
+
+  public readonly currAppAlias = computed(() => {
+    const state = this.state();
+
+    if (!state.loaded) {
+      return null;
+    }
+
+    const path = this.route1();
+
+    if (!path) {
+      return null;
+    }
+
+    const regex = /^\/([a-zA-Z0-9\-\_])+/;
+
+    // Find app alias. Example:
+    // "/app1?x=y" => "app1"
+    const alias = path.match(regex)?.[0]?.replace('/', '');
+
+    const currApp = state.apps.find((app) => app.alias === alias);
+
+    return currApp?.alias ?? null;
+  })
+
   constructor(private readonly router: Router, private location: Location) {}
 
   public init() {
-    // "Back" button in browser
-    // history.back();
-    window.addEventListener('popstate', () => {
-      // const alias = this.getCurrAppAliasByURL(window.location.pathname);
-      // this.currAppAlias.set(alias);
-    });
-
+    // fromEvent<MessageEvent>(this.window, 'message')
     window.addEventListener(
       'message',
       (msgEvent) => {
@@ -131,34 +157,10 @@ export class AppShellService {
         data.loaded = true;
       });
 
-      const currLocationPath = this.location.path();
-      const currAppAlias = this.getCurrAppAliasByURL(currLocationPath);
-
-      this.currAppAlias.set(currAppAlias);
     }, 1000);
-  }
-
-  public setCurrAlias(alias: string) {
-    this.currAppAlias.set(alias);
   }
 
   public goToApp(alias: string) {
     this.router.navigate([alias]);
-  }
-
-  /**
-   *
-   * @param path example: "/app1"
-   */
-  private getCurrAppAliasByURL(path: string) {
-    const regex = /^\/([a-zA-Z0-9\-\_])+/;
-
-    // Find app alias. Example:
-    // "/app1?x=y" => "app1"
-    const alias = path.match(regex)?.[0]?.replace('/', '');
-
-    const currApp = this.state().apps.find((app) => app.alias === alias);
-
-    return currApp?.alias ?? null;
   }
 }
