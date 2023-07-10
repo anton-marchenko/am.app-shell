@@ -1,11 +1,9 @@
 import { Location } from '@angular/common';
 import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 type App = {
-  type: 'inner' | 'wmf';
+  disabled?: boolean;
   alias: string;
   title: string;
   description: string;
@@ -16,42 +14,39 @@ const DEFAULT_APP = 'home';
 
 const appsExample: App[] = [
   {
-    type: 'inner',
     alias: DEFAULT_APP,
     title: 'Home',
     description: 'Simple page inside this angular app',
     url: '',
+    disabled: true,
   },
   {
-    type: 'inner',
     alias: 'about',
     title: 'About',
     description: 'Simple page inside this angular app',
     url: '',
+    disabled: true,
   },
   {
-    type: 'inner',
     alias: 'app1',
     title: 'APP1',
     description: 'Micro-front (embedded by iframe)',
     url: 'http://run.mocky.io/v3/9097d9ab-4b46-4516-965f-ba19d497426a',
   },
   {
-    type: 'inner',
     alias: 'app2',
     title: 'APP2',
     description: 'Micro-front (embedded by iframe)',
     url: 'http://run.mocky.io/v3/21c9b000-1631-4f42-8f64-8e727da6320e',
   },
   {
-    type: 'wmf',
     alias: 'wmf',
     title: 'APP3 (WMF)',
     description: 'Micro-front (embedded by webpack module federation)',
     url: '',
+    disabled: true,
   },
   {
-    type: 'inner',
     alias: 'dashboard',
     title: 'Dashboard',
     description: 'Micro-front (embedded by iframe)',
@@ -131,7 +126,7 @@ export class AppShellService {
 
     setTimeout(() => {
       this.state.mutate((data) => {
-        data.apps = appsExample;
+        data.apps = appsExample.filter((app) => !app.disabled);
         data.loaded = true;
       });
 
