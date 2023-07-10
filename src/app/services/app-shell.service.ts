@@ -25,7 +25,7 @@ const appsExample: App[] = [
     title: 'About',
     description: 'Simple page inside this angular app',
     url: '',
-    // disabled: true,
+    disabled: true,
   },
   {
     alias: 'app1',
