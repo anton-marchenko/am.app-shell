@@ -1,5 +1,8 @@
+import { Location } from '@angular/common';
 import { Injectable, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 type App = {
   type: 'inner' | 'wmf';
@@ -52,21 +55,7 @@ const appsExample: App[] = [
     alias: 'dashboard',
     title: 'Dashboard',
     description: 'Micro-front (embedded by iframe)',
-    url: 'http://localhost:53263/',
-  },
-  {
-    type: 'inner',
-    alias: 'dashboard2',
-    title: 'Dashboard2',
-    description: 'Micro-front (embedded by iframe)',
-    url: 'http://localhost:53263/',
-  },
-  {
-    type: 'outer',
-    alias: 'blog',
-    title: 'Blog',
-    description: 'External link (will be opened in other tab)',
-    url: 'https://blog.angular.io/',
+    url: 'http://localhost:64596',
   },
 ];
 
@@ -77,6 +66,24 @@ export class AppShellService {
   public readonly currAppAlias = signal<string | null>(null);
   public readonly currApp = computed(() => {
     return this.state().apps.find((app) => app.alias === this.currAppAlias());
+  });
+  public readonly iframeUrl = computed(() => {
+    const url = this.currApp()?.url;
+    const alias = this.currApp()?.alias;
+    const locationPath = this.location.path();
+    const ctx = locationPath.replace(new RegExp('^/' + alias), '');
+
+    /**
+     * @example
+     *
+     * location.href = "http://app.shell.example.com/app1/ctx?a=b"
+     * location.path = "app1/ctx?a=b"
+     * currApp.alias = "app1"
+     * currApp.url = "http://iframe.example.com"
+     * ctx = "/ctx?a=b"
+     * iframeUrl = "http://iframe.example.com/ctx?a=b"
+     */
+    return url + ctx;
   });
   public readonly navItems = computed(() => {
     const currAppAlias = this.currAppAlias();
@@ -94,15 +101,14 @@ export class AppShellService {
     apps: [],
   });
 
-  constructor(private readonly router: Router) {}
+  constructor(private readonly router: Router, private location: Location) {}
 
   public init() {
     // "Back" button in browser
     // history.back();
     window.addEventListener('popstate', () => {
-      const alias = this.getCurrAppAliasByURL(window.location.pathname);
-
-      this.currAppAlias.set(alias);
+      // const alias = this.getCurrAppAliasByURL(window.location.pathname);
+      // this.currAppAlias.set(alias);
     });
 
     window.addEventListener(
@@ -117,7 +123,7 @@ export class AppShellService {
         if (msg.type === 'updatePath') {
           const url = '/' + this.currAppAlias() + msg.path;
 
-          this.router.navigateByUrl(url, { replaceUrl: true })
+          this.router.navigateByUrl(url, { replaceUrl: true });
         }
       },
       false
@@ -132,7 +138,7 @@ export class AppShellService {
       const currUrl = this.router.url;
       const currAppAlias = this.getCurrAppAliasByURL(currUrl);
 
-      this.currAppAlias.set(currAppAlias);
+      // this.currAppAlias.set(currAppAlias);
     }, 1000);
   }
 
@@ -142,5 +148,21 @@ export class AppShellService {
 
   public goToApp(alias: string) {
     this.router.navigate([alias]);
+  }
+
+  /**
+   *
+   * @param path example: "/app1"
+   */
+  private getCurrAppAliasByURL(path: string) {
+    const regex = /^\/([a-zA-Z0-9\-\_])+/;
+
+    // Find app alias. Example:
+    // "/app1?x=y" => "app1"
+    const alias = path.match(regex)?.[0]?.replace('/', '');
+
+    const currApp = this.state().apps.find((app) => app.alias === alias);
+
+    return currApp?.alias ?? null;
   }
 }

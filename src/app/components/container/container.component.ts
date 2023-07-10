@@ -7,8 +7,9 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppShellService } from 'src/app/services/app-shell.service';
-import { filter, map } from 'rxjs';
+import { map } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-container',
@@ -21,16 +22,38 @@ import { toObservable } from '@angular/core/rxjs-interop';
 export class ContainerComponent implements OnInit {
   @ViewChild('iframeRef', { static: true }) public iframeRef!: ElementRef;
 
-  $iframeUrl = toObservable(this.appShellService.currApp).pipe(
-    filter((app) => !!app),
-    map((app) => app!.url)
+  public readonly iframeUrl$ = toObservable(this.appShellService.iframeUrl);
+
+  private readonly isAppLoaded$ = toObservable(this.appShellService.state).pipe(
+    map((state) => state.loaded)
   );
 
-  constructor(private readonly appShellService: AppShellService) {}
+  constructor(
+    private readonly appShellService: AppShellService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.$iframeUrl.subscribe((url) => {
-      this.iframeRef?.nativeElement?.contentWindow?.location?.replace(url);
+    this.isAppLoaded$.subscribe((loaded) => {
+      if (loaded) {
+        this.activatedRoute.url.subscribe((url) => {
+          this.appShellService.setCurrAlias(url[0]?.path);
+        });
+      }
+    });
+
+    this.iframeUrl$.subscribe({
+      next: (url) => {
+        if (!url) {
+          // debugger;
+          url = 'http://run.mocky.io/v3/e0e8dfa0-3046-405f-ab6f-24e52b89fc27';
+        }
+        this.iframeRef?.nativeElement?.contentWindow?.location?.replace(url);
+      },
+      complete: () => {
+        // will be completed automatically after component destruction.
+        // probably because derived from signal().
+      },
     });
   }
 }
