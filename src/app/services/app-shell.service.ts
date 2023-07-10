@@ -51,6 +51,7 @@ const appsExample: App[] = [
     title: 'Dashboard',
     description: 'Micro-front (embedded by iframe)',
     url: 'http://localhost:49797',
+    disabled: true,
   },
 ];
 
