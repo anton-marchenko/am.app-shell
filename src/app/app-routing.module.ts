@@ -22,10 +22,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'wmf',
-    loadComponent: () => import('mfe1/Component').then((m) => m.AppComponent),
-  },
-  {
     // List of apps for iframe integration
     // might be configured dynamically in backend.
     // Therefore list of those routes could not be determined in frontend.
