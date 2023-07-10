@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:ghp": "ng build --base-href \"https://anton-marchenko.github.io/am.app-shell/\"",
+    "deploy:ghp": "npx angular-cli-ghpages --dir=dist/am-app-shell"
   },
   "private": true,
   "dependencies": {
