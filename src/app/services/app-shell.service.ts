@@ -98,7 +98,7 @@ export class AppShellService {
     apps: [],
   });
 
-  public readonly route1 = toSignal(
+  private readonly navEvent = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
       map((e) => e.urlAfterRedirects),
@@ -112,7 +112,7 @@ export class AppShellService {
       return null;
     }
 
-    const path = this.route1();
+    const path = this.navEvent();
 
     if (!path) {
       return null;
