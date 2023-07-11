@@ -3,56 +3,82 @@ import { Injectable, computed, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
+import { environment } from './../../environments/environment';
 
 type App = {
   disabled?: boolean;
   alias: string;
   title: string;
   description: string;
-  url: string;
+  /** URL for hosting iframe */
+  url?: string;
 };
 
-const DEFAULT_APP = 'home';
+const urls = new Map<string, { prod: string; dev: string }>([
+  [
+    'app1',
+    {
+      prod: 'https://run.mocky.io/v3/9097d9ab-4b46-4516-965f-ba19d497426a',
+      dev: 'http://run.mocky.io/v3/9097d9ab-4b46-4516-965f-ba19d497426a',
+    },
+  ],
+  [
+    'app2',
+    {
+      prod: 'https://run.mocky.io/v3/21c9b000-1631-4f42-8f64-8e727da6320e',
+      dev: 'http://run.mocky.io/v3/21c9b000-1631-4f42-8f64-8e727da6320e',
+    },
+  ],
+  [
+    'app4',
+    {
+      prod: 'https://anton-marchenko.github.io/am.app-shell-frame-app/',
+      dev: 'http://localhost:4202/',
+    },
+  ],
+]);
+
+function resolveUrl(alias: string) {
+  if (environment.production) {
+    return urls.get(alias)?.prod;
+  }
+
+  return urls.get(alias)?.dev;
+}
 
 const appsExample: App[] = [
   {
-    alias: DEFAULT_APP,
+    alias: 'home',
     title: 'Home',
     description: 'Simple page inside this angular app',
-    url: '',
-    // disabled: true,
   },
   {
     alias: 'about',
     title: 'About',
     description: 'Simple page inside this angular app',
-    url: '',
-    // disabled: true,
   },
   {
     alias: 'app1',
     title: 'APP1',
     description: 'Micro-front (embedded by iframe)',
-    url: 'http://run.mocky.io/v3/9097d9ab-4b46-4516-965f-ba19d497426a',
+    url: resolveUrl('app1'),
   },
   {
     alias: 'app2',
     title: 'APP2',
     description: 'Micro-front (embedded by iframe)',
-    url: 'http://run.mocky.io/v3/21c9b000-1631-4f42-8f64-8e727da6320e',
+    url: resolveUrl('app2'),
   },
   {
     alias: 'wmf',
     title: 'APP3 (WMF)',
     description: 'Micro-front (embedded by webpack module federation)',
-    url: '',
-    // disabled: true,
   },
   {
-    alias: 'dashboard',
-    title: 'Dashboard',
+    alias: 'app4',
+    title: 'APP4',
     description: 'Micro-front (embedded by iframe)',
-    url: 'http://localhost:49797',
+    url: resolveUrl('app4'),
     // disabled: true,
   },
 ];
@@ -101,7 +127,7 @@ export class AppShellService {
   private readonly navEvent = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
-      map((e) => e.urlAfterRedirects),
+      map((e) => e.urlAfterRedirects)
     )
   );
 
@@ -127,12 +153,12 @@ export class AppShellService {
     const currApp = state.apps.find((app) => app.alias === alias);
 
     return currApp?.alias ?? null;
-  })
+  });
 
   constructor(private readonly router: Router, private location: Location) {}
 
   public init() {
-    // fromEvent<MessageEvent>(this.window, 'message')
+    // TODO fromEvent<MessageEvent>(this.window, 'message')
     window.addEventListener(
       'message',
       (msgEvent) => {
@@ -156,7 +182,6 @@ export class AppShellService {
         data.apps = appsExample.filter((app) => !app.disabled);
         data.loaded = true;
       });
-
     }, 1000);
   }
 
